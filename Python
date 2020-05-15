@@ -1,0 +1,41 @@
+import spacy
+from spacy_langdetect import LanguageDetector
+import en_core_web_sm
+
+nlp = en_core_web_sm.load()
+
+nlp.add_pipe(LanguageDetector(), name="language_detector", last=True)
+
+#text = "This is English text. Er lebt mit seinen Eltern und seiner Schwester in Berlin. Yo me divierto todos los días en el parque. Je m'appelle Angélica Summer, j'ai 12 ans et je suis canadienne." #random mix - run it for yourself to find out the languages :)
+
+#text = 'hari ini adalah hari yang sangat hangat. Bagaimana saya berharap saya memiliki' #indonesian
+
+#text = 'hari ini adalah hari yang sangat hangat. bagaimana saya mahu saya mempunyai penghawa dingin' #malay
+
+#text = 'วันนี้เป็นวันที่อบอุ่นมาก ฉันหวังว่าฉันจะมีเครื่องปรับอากาศ' #thai
+
+text = 'hôm nay là một ngày rất ấm áp ước gì tôi có máy lạnh' #vietnamese
+
+#text = 'ngayon ay isang napaka-mainit na araw. paano ko nais magkaroon ng air conditioning' #filipino
+
+#text = 'а неправильный формат идентификатора дн назад' #russian
+
+doc = nlp(text)
+
+# document-level language detection. 'Average language' of document.
+
+print(doc._.language)
+print ('\n')
+
+# sentence level language detection
+
+for i, sent in enumerate(doc.sents):
+    print(sent, sent._.language)
+    print (sent._.language.get('language')) #retrieves ISO language code
+    
+#able to detect (ISO country codes):
+#af, ar, bg, bn, ca, cs, cy, da, de, el, en, es, et, fa, fi, fr, gu, he,
+hi, hr, hu, id, it, ja, kn, ko, lt, lv, mk, ml, mr, ne, nl, no, pa, pl,
+pt, ro, ru, sk, sl, so, sq, sv, sw, ta, te, th, tl, tr, uk, ur, vi, zh-cn, zh-tw
+
+#ISO directory: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
